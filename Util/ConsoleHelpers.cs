@@ -71,7 +71,24 @@ internal static class ConsoleHelpers
     }
     public static void ViewResultByJobId()
     {
-        throw new NotImplementedException();
+        Console.WriteLine("Insert the id of job");
+        if (!Guid.TryParse(Console.ReadLine().Trim(), out Guid jobId))
+        {
+            Console.WriteLine("Invalid input");
+            return;
+        }
+        var job = jobStore.GetAllJobs().FirstOrDefault(j => j.Id == jobId);
+        if (job is null)
+        {
+            Console.WriteLine("Job not found");
+            return;
+        }
+        if (job.Status != Domain.JobStatus.Completed)
+        {
+            Console.WriteLine($"Job is not completed. Current Status: {job.Status}");
+            return;
+        }
+        Console.WriteLine($"Job Result: {job.Result}");
     }
     public static void CancelJob()
     {
