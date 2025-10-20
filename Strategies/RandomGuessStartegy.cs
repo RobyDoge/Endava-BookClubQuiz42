@@ -7,7 +7,7 @@ internal class RandomGuessStartegy: IAnswerStrategy
 
     public async Task<string> AnswerQuestion(string question, IProgress<int>? progress = null)
     {
-        await Task.Delay(800);
+        await Task.Delay(1500);
         return PossibleAnswers[RandomSeed.Next(PossibleAnswers.Length)];
     }
 }

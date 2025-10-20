@@ -36,27 +36,14 @@ internal static class ConsoleHelpers
             Console.WriteLine("Invalid input");
             return;
         }
-        Console.WriteLine("Choose the Algorithm: Trivial, SlowCount, or RandomGuess: ");
-        string algorithm = Console.ReadLine().Trim().ToLower();
-        IAnswerStrategy? strategy = null;
-        switch (algorithm)
-        {
-            case "randomguess":
-                strategy = new RandomGuessStartegy();
-                break;
-            case "slowcount":
-                strategy = new SlowCountStrategy();
-                break;
-            case "trivial":
-                strategy = new TrivialStrategy();
-                break;
-            default:
-                Console.WriteLine("Invalid input");
-                return;
-        }
+        var strategy = GetStrategy();
+        if (strategy is null) return;
+
         var jobRunner = new JobRunner(strategy,jobStore);
         var jobId = jobRunner.CreateJob(question);
         Console.WriteLine($"Job created with ID: {jobId}");
+        
+        //to implement a better way to cancel the job
         Console.WriteLine("Starting Job.");
         await jobRunner.StartJob(jobId);
 
@@ -71,7 +58,16 @@ internal static class ConsoleHelpers
     }
     public static void ListJobs()
     {
-        throw new NotImplementedException();
+        Console.WriteLine("Listing all jobs:");
+        //to add headers
+        foreach (var job in jobStore.GetAllJobs())
+        {
+            var jobId = string.Format("{0,-36}", job.Id);
+            var status = string.Format("{0,-10}", job.Status);
+            var progress = string.Format("{0,-4}", job.Progress);
+            var duration = string.Format("{0,-10}", job.Duration?.ToString() ?? "N/A");
+            Console.WriteLine($"Job ID: {jobId} | Status: {status} | Progress: {progress} | Duration: {duration}");
+        }
     }
     public static void ViewResultByJobId()
     {
@@ -82,4 +78,20 @@ internal static class ConsoleHelpers
         throw new NotImplementedException();
     }
 
+    private static IAnswerStrategy? GetStrategy()
+    {
+        Console.WriteLine("Choose the Algorithm: Trivial, SlowCount, or RandomGuess: ");
+        switch (Console.ReadLine().Trim().ToLower())
+        {
+            case "randomguess":
+                return new RandomGuessStartegy();
+            case "slowcount":
+                return new SlowCountStrategy();
+            case "trivial":
+                return new TrivialStrategy();
+            default:
+                Console.WriteLine("Invalid input");
+                return null;
+        }
+    }
 }

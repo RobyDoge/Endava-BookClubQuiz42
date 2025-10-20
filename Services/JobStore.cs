@@ -17,6 +17,11 @@ internal class JobStore
         return job;
     }
 
+    public IEnumerable<Job> GetAllJobs()
+    {
+        return Jobs.Values;
+    }
+
     public void MarkRunning(Guid jobId)
     {
         if (Jobs.TryGetValue(jobId, out var job))

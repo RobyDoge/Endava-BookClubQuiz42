@@ -11,7 +11,7 @@ internal class SlowCountStrategy : IAnswerStrategy
 
         for (int i = 0; i < forCap; i++)
         {
-            int delayMs = Random.Shared.Next(300, 701);
+            int delayMs = Random.Shared.Next(700, 1200);
             await Task.Delay(delayMs);
 
             int percent = ((i + 1) * 100) / forCap;
