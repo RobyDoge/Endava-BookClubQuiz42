@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace MiniDeepThought.Strategies;
 
-namespace MiniDeepThought.Strategies
+internal interface IAnswerStrategy
 {
-    internal interface IAnswerStrategy
-    {
-    }
+
 }
