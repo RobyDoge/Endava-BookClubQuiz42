@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+namespace MiniDeepThought.Strategies;
 
-namespace MiniDeepThought.Strategies
+internal class TrivialStrategy : IAnswerStrategy
 {
-    internal class TrivialStrategy
+    public Task<string> AnswerQuestion(string question, IProgress<int>? progress = null)
     {
+        return Task.FromResult("42");
     }
 }
