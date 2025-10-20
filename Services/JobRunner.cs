@@ -5,7 +5,6 @@ namespace MiniDeepThought.Services;
 
 internal class JobRunner
 {
-    public static bool JobIsRunning { get; set; } = false;
     private JobStore JS { get; init; } 
     private IAnswerStrategy Strategy { get; set; }
 
@@ -35,5 +34,10 @@ internal class JobRunner
             Console.WriteLine($"Error running job {jobId}: {ex.Message}");
             JS.MarkFail(jobId);
         }
+    }
+
+    public async Task CancelJob(Guid jobId)
+    {
+        
     }
 }

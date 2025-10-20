@@ -57,12 +57,17 @@ internal static class ConsoleHelpers
         var jobRunner = new JobRunner(strategy,jobStore);
         var jobId = jobRunner.CreateJob(question);
         Console.WriteLine($"Job created with ID: {jobId}");
-        Console.Write("Starting Job");
+        Console.WriteLine("Starting Job.");
         await jobRunner.StartJob(jobId);
 
-
-
-
+        if (strategy is not SlowCountStrategy) return;
+        Console.WriteLine("To cancel the job Press 'C' or press any other key to get back to the Main Menu.");
+        ConsoleKeyInfo keyInfo = Console.ReadKey(intercept: true);
+        if (keyInfo.Key == ConsoleKey.C)
+        {
+            Console.WriteLine("Cancelling Job...");
+            await jobRunner.CancelJob(jobId);
+        }
     }
     public static void ListJobs()
     {

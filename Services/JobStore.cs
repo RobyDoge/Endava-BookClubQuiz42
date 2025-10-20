@@ -63,4 +63,14 @@ internal class JobStore
             job.Duration = job.Stopwatch?.Elapsed;
         }
     }
+
+    public void MarkCancelled(Guid jobId)
+    {
+        if (Jobs.TryGetValue(jobId, out var job))
+        {
+            job.Status = JobStatus.Canceled;
+            job.Stopwatch?.Stop();
+            job.Duration = job.Stopwatch?.Elapsed;
+        }
+    }
 }
