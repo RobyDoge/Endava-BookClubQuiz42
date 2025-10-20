@@ -3,7 +3,9 @@
 internal enum JobStatus
 {
     None,
+    Queued,
     Completed,
     Running,
-    Canceled
+    Canceled,
+    Failed
 }

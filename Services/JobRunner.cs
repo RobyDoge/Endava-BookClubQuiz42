@@ -16,8 +16,24 @@ internal class JobRunner
         JS = jobStore;
     }
 
-    internal void CreateJob(string question)
+    public Guid CreateJob(string question)
     {
-        CurrentJob = new Job(question, Strategy.GetType().Name);
+        return JS.CreateJob(question, Strategy).Id;
+    }
+
+    public async Task StartJob(Guid jobId)
+    {
+        JS.MarkRunning(jobId);
+        try
+        {
+            Progress<int>? progress = Strategy is SlowCountStrategy?  new Progress<int>(percent => JS.UpdateProgress(jobId, percent)) : null;
+            var answer = await Strategy.AnswerQuestion(JS.GetQuestionText(jobId), progress);
+            JS.MarkComplete(jobId,answer);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error running job {jobId}: {ex.Message}");
+            JS.MarkFail(jobId);
+        }
     }
 }

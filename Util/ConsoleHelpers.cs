@@ -6,6 +6,7 @@ namespace MiniDeepThought.Util;
 
 internal static class ConsoleHelpers
 {
+    public static JobStore jobStore = new JobStore();
     public static int OptionSelector()
     {
         Console.WriteLine();
@@ -26,7 +27,7 @@ internal static class ConsoleHelpers
         if (result < 1 || result > 5)  Console.WriteLine("Invalid input range.");
         return result;
     }
-    public static void SubmitQuestion()
+    public async static void SubmitQuestion()
     {
         Console.WriteLine("Please write a Question between 1 and 200 characters:");
         string question = Console.ReadLine().Trim();
@@ -53,9 +54,12 @@ internal static class ConsoleHelpers
                 Console.WriteLine("Invalid input");
                 return;
         }
+        var jobRunner = new JobRunner(strategy,jobStore);
+        var jobId = jobRunner.CreateJob(question);
+        Console.WriteLine($"Job created with ID: {jobId}");
+        Console.Write("Starting Job");
+        await jobRunner.StartJob(jobId);
 
-        var jobRunner = new JobRunner(strategy);
-        jobRunner.CreateJob(question);
 
 
 
