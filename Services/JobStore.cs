@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MiniDeepThought.Domain;
+using MiniDeepThought.Domanin;
+using System.Collections.Concurrent;
 
-namespace MiniDeepThought.Services
+namespace MiniDeepThought.Services;
+
+internal class JobStore
 {
-    internal class JobStore
+    private ConcurrentDictionary<Guid, Job> Jobs = new();
+
+    public Job Create(Job job)
     {
+        var job = new Job()
+        return job;
     }
 }

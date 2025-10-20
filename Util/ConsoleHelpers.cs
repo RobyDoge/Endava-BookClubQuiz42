@@ -1,4 +1,8 @@
-﻿namespace MiniDeepThought.Util;
+﻿using MiniDeepThought.Services;
+using MiniDeepThought.Strategies;
+using System.Net.Http.Headers;
+
+namespace MiniDeepThought.Util;
 
 internal static class ConsoleHelpers
 {
@@ -13,6 +17,7 @@ internal static class ConsoleHelpers
         4. Cancel Running Job
         5. Exit
         """);
+        Console.Write("Option: ");
         if (!int.TryParse(Console.ReadLine(), out int result))
         {
             Console.WriteLine("The input must be a number");
@@ -23,7 +28,37 @@ internal static class ConsoleHelpers
     }
     public static void SubmitQuestion()
     {
-        throw new NotImplementedException();
+        Console.WriteLine("Please write a Question between 1 and 200 characters:");
+        string question = Console.ReadLine().Trim();
+        if (question is null || question.Length == 0 || question.Length > 200)
+        {
+            Console.WriteLine("Invalid input");
+            return;
+        }
+        Console.WriteLine("Choose the Algorithm: Trivial, SlowCount, or RandomGuess: ");
+        string algorithm = Console.ReadLine().Trim().ToLower();
+        IAnswerStrategy? strategy = null;
+        switch (algorithm)
+        {
+            case "randomguess":
+                strategy = new RandomGuessStartegy();
+                break;
+            case "slowcount":
+                strategy = new SlowCountStrategy();
+                break;
+            case "trivial":
+                strategy = new TrivialStrategy();
+                break;
+            default:
+                Console.WriteLine("Invalid input");
+                return;
+        }
+
+        var jobRunner = new JobRunner(strategy);
+        jobRunner.CreateJob(question);
+
+
+
     }
     public static void ListJobs()
     {

@@ -10,7 +10,7 @@ internal class Job
     public string AlgorithmKey { get; init; } = string.Empty;
     public Timer? Duration { get; set; }
     public DateTime CreatedUtc { get; init; } = DateTime.Now;
-    public decimal Progress { get; set; } = decimal.Zero;
+    public string Progress { get; set; } = "0%";
     public string Result { get; set; } = string.Empty; 
 
     public Job(string questionText, string algorithmKey)
@@ -19,4 +19,5 @@ internal class Job
         AlgorithmKey = algorithmKey;
         CreatedUtc = DateTime.UtcNow;
     }
+    public void UpdatedProgress(int progress) => Progress = $"{progress}%";
 }
